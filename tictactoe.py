@@ -46,6 +46,22 @@ def new_Btns():
     ]
 
 
+rsbtn = Button(root, width=10, height=2, command=lambda: reset(), text="RESET")
+rsbtn.grid(row=12, column=1)
+
+
+def myexit():
+    result = messagebox.askyesno(
+        "EXIT", "Do you want to exit the GAME?")
+    if (result):
+        exit()
+
+
+exitbtn = Button(root, width=10, height=2,
+                 command=lambda: myexit(), text="EXIT")
+exitbtn.grid(row=12, column=3)
+
+
 buttons = new_Btns()
 
 activePalyer = "X"
@@ -118,13 +134,11 @@ def myfun(number):
         if (someoneWon()["res"]):
             finished = True
             messagebox.showinfo("Congratulations",
-                                someoneWon()["name"] + " won this match!")
+                                someoneWon()["name"] + " won the match!")
             restart = messagebox.askyesno(
                 "GAME OVER", "Do you want to restart the game?")
             if (restart):
                 reset()
-            else:
-                exit()
         elif (someoneWon()["tie"]):
             messagebox.showinfo("Tie",
                                 "This match was a TIE")
@@ -133,8 +147,6 @@ def myfun(number):
                 "TIE", "Do you want to restart the game?")
             if (restart):
                 reset()
-            else:
-                exit()
 
 
 root.resizable(False, False)
