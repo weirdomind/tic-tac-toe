@@ -50,10 +50,25 @@ rsbtn = Button(root, width=10, height=2, command=lambda: reset(), text="RESET")
 rsbtn.grid(row=12, column=1)
 
 
+def greet(exited):
+    if (exited):
+        last = Tk()
+        last.title("THANKS")
+        thnx = Label(text="Thanks for Trying out my WEIRD App",
+                     font="arial 20", width=30, height=10)
+        thnx.grid(row=2, column=2)
+        last.mainloop()
+    else:
+        messagebox.showinfo("Thanks",
+                            "Thanks for Trying out my WEIRD App")
+
+
 def myexit():
+    global exited
     result = messagebox.askyesno(
         "EXIT", "Do you want to exit the GAME?")
     if (result):
+        greet(False)
         exit()
 
 
@@ -111,14 +126,17 @@ def changePlayer():
 
 def reset():
     global mat, buttons, finished, activePalyer
-    mat = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-    ]
-    buttons = new_Btns()
-    finished = False
-    activePalyer = "X"
+    restart = messagebox.askyesno(
+        "RESTART", "Do you want to restart the game?")
+    if (restart):
+        mat = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""],
+        ]
+        buttons = new_Btns()
+        finished = False
+        activePalyer = "X"
 
 
 def myfun(number):
@@ -135,19 +153,14 @@ def myfun(number):
             finished = True
             messagebox.showinfo("Congratulations",
                                 someoneWon()["name"] + " won the match!")
-            restart = messagebox.askyesno(
-                "GAME OVER", "Do you want to restart the game?")
-            if (restart):
-                reset()
+            reset()
         elif (someoneWon()["tie"]):
             messagebox.showinfo("Tie",
                                 "This match was a TIE")
-
-            restart = messagebox.askyesno(
-                "TIE", "Do you want to restart the game?")
-            if (restart):
-                reset()
+            reset()
 
 
 root.resizable(False, False)
 root.mainloop()
+
+greet(True)
