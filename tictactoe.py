@@ -54,15 +54,27 @@ finished = False
 
 
 def someoneWon():
-    global mat
+    global mat, buttons
     for i in range(len(mat)):
         if (mat[i][0] == mat[i][1] and mat[i][1] == mat[i][2] and mat[i][2] != ""):
+            buttons[i][0].config(bg="#0f0")
+            buttons[i][1].config(bg="#0f0")
+            buttons[i][2].config(bg="#0f0")
             return {"res": True, "name": mat[i][0]}
         if (mat[0][i] == mat[1][i] and mat[1][i] == mat[2][i] and mat[2][i] != ""):
+            buttons[0][i].config(bg="#0f0")
+            buttons[1][i].config(bg="#0f0")
+            buttons[2][i].config(bg="#0f0")
             return {"res": True, "name": mat[0][i]}
     if (mat[0][0] == mat[1][1] and mat[1][1] == mat[2][2] and mat[2][2] != ""):
+        buttons[0][0].config(bg="#0f0")
+        buttons[1][1].config(bg="#0f0")
+        buttons[2][2].config(bg="#0f0")
         return {"res": True, "name": mat[0][0]}
     if (mat[0][2] == mat[1][1] and mat[2][0] == mat[1][1] and mat[1][1] != ""):
+        buttons[0][2].config(bg="#0f0")
+        buttons[1][1].config(bg="#0f0")
+        buttons[2][0].config(bg="#0f0")
         return {"res": True, "name": mat[0][2]}
     tie = True
     for row in mat:
@@ -125,4 +137,5 @@ def myfun(number):
                 exit()
 
 
+root.resizable(False, False)
 root.mainloop()
