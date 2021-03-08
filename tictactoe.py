@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 root = Tk()
 root.title("Tic-Tac-Toe")
@@ -8,6 +9,48 @@ mat = [
     ["", "", ""],
     ["", "", ""],
 ]
+
+
+def new_Btns():
+    b1 = Button(root, width=20, height=10,
+                command=lambda: myfun(1), text=mat[0][0])
+    b1.grid(row=1, column=1)
+
+    b2 = Button(root, width=20, height=10, command=lambda: myfun(2))
+    b2.grid(row=1, column=2)
+
+    b3 = Button(root, width=20, height=10, command=lambda: myfun(3))
+    b3.grid(row=1, column=3)
+
+    b4 = Button(root, width=20, height=10, command=lambda: myfun(4))
+    b4.grid(row=4, column=1)
+
+    b5 = Button(root, width=20, height=10, command=lambda: myfun(5))
+    b5.grid(row=4, column=2)
+
+    b6 = Button(root, width=20, height=10, command=lambda: myfun(6))
+    b6.grid(row=4, column=3)
+
+    b7 = Button(root, width=20, height=10, command=lambda: myfun(7))
+    b7.grid(row=8, column=1)
+
+    b8 = Button(root, width=20, height=10, command=lambda: myfun(8))
+    b8.grid(row=8, column=2)
+
+    b9 = Button(root, width=20, height=10, command=lambda: myfun(9))
+    b9.grid(row=8, column=3)
+    return [
+        [b1, b2, b3],
+        [b4, b5, b6],
+        [b7, b8, b9],
+    ]
+
+
+buttons = new_Btns()
+
+activePalyer = "X"
+
+finished = False
 
 
 def someoneWon():
@@ -21,12 +64,13 @@ def someoneWon():
         return {"res": True, "name": mat[0][0]}
     if (mat[0][2] == mat[1][1] and mat[2][0] == mat[1][1] and mat[1][1] != ""):
         return {"res": True, "name": mat[0][2]}
-    return {"res": FALSE, "name": "nobody"}
+    tie = True
+    for row in mat:
+        for ele in row:
+            if (ele == ""):
+                tie = False
 
-
-activePalyer = "X"
-
-finished = False
+    return {"res": False, "name": "nobody", "tie": tie}
 
 
 def changePlayer():
@@ -37,8 +81,21 @@ def changePlayer():
         activePalyer = "X"
 
 
+def reset():
+    global mat, buttons, finished, activePalyer
+    mat = [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+    ]
+    buttons = new_Btns()
+    finished = False
+    activePalyer = "X"
+
+
 def myfun(number):
-    global activePalyer, finished
+    global activePalyer, finished, mat, buttons
+
     if(mat[int((number-(((number-1) % 3)+1))/3)
            ][int((number - 1) % 3)] == "" and not finished):
         buttons[int((number-(((number-1) % 3)+1))/3)
@@ -48,42 +105,24 @@ def myfun(number):
         changePlayer()
         if (someoneWon()["res"]):
             finished = True
-            print(someoneWon()["name"] + " won")
+            messagebox.showinfo("Congratulations",
+                                someoneWon()["name"] + " won this match!")
+            restart = messagebox.askyesno(
+                "GAME OVER", "Do you want to restart the game?")
+            if (restart):
+                reset()
+            else:
+                exit()
+        elif (someoneWon()["tie"]):
+            messagebox.showinfo("Tie",
+                                "This match was a TIE")
 
-
-b1 = Button(root, width=20, height=10,
-            command=lambda: myfun(1), text=mat[0][0])
-b1.grid(row=1, column=1)
-
-b2 = Button(root, width=20, height=10, command=lambda: myfun(2))
-b2.grid(row=1, column=2)
-
-b3 = Button(root, width=20, height=10, command=lambda: myfun(3))
-b3.grid(row=1, column=3)
-
-b4 = Button(root, width=20, height=10, command=lambda: myfun(4))
-b4.grid(row=4, column=1)
-
-b5 = Button(root, width=20, height=10, command=lambda: myfun(5))
-b5.grid(row=4, column=2)
-
-b6 = Button(root, width=20, height=10, command=lambda: myfun(6))
-b6.grid(row=4, column=3)
-
-b7 = Button(root, width=20, height=10, command=lambda: myfun(7))
-b7.grid(row=8, column=1)
-
-b8 = Button(root, width=20, height=10, command=lambda: myfun(8))
-b8.grid(row=8, column=2)
-
-b9 = Button(root, width=20, height=10, command=lambda: myfun(9))
-b9.grid(row=8, column=3)
-
-buttons = [
-    [b1, b2, b3],
-    [b4, b5, b6],
-    [b7, b8, b9],
-]
+            restart = messagebox.askyesno(
+                "TIE", "Do you want to restart the game?")
+            if (restart):
+                reset()
+            else:
+                exit()
 
 
 root.mainloop()
