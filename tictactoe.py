@@ -13,31 +13,31 @@ mat = [
 
 def new_Btns():
     b1 = Button(root, width=20, height=10,
-                command=lambda: myfun(1), text=mat[0][0])
+                command=lambda: onClick(1), text=mat[0][0])
     b1.grid(row=1, column=1)
 
-    b2 = Button(root, width=20, height=10, command=lambda: myfun(2))
+    b2 = Button(root, width=20, height=10, command=lambda: onClick(2))
     b2.grid(row=1, column=2)
 
-    b3 = Button(root, width=20, height=10, command=lambda: myfun(3))
+    b3 = Button(root, width=20, height=10, command=lambda: onClick(3))
     b3.grid(row=1, column=3)
 
-    b4 = Button(root, width=20, height=10, command=lambda: myfun(4))
+    b4 = Button(root, width=20, height=10, command=lambda: onClick(4))
     b4.grid(row=4, column=1)
 
-    b5 = Button(root, width=20, height=10, command=lambda: myfun(5))
+    b5 = Button(root, width=20, height=10, command=lambda: onClick(5))
     b5.grid(row=4, column=2)
 
-    b6 = Button(root, width=20, height=10, command=lambda: myfun(6))
+    b6 = Button(root, width=20, height=10, command=lambda: onClick(6))
     b6.grid(row=4, column=3)
 
-    b7 = Button(root, width=20, height=10, command=lambda: myfun(7))
+    b7 = Button(root, width=20, height=10, command=lambda: onClick(7))
     b7.grid(row=8, column=1)
 
-    b8 = Button(root, width=20, height=10, command=lambda: myfun(8))
+    b8 = Button(root, width=20, height=10, command=lambda: onClick(8))
     b8.grid(row=8, column=2)
 
-    b9 = Button(root, width=20, height=10, command=lambda: myfun(9))
+    b9 = Button(root, width=20, height=10, command=lambda: onClick(9))
     b9.grid(row=8, column=3)
     return [
         [b1, b2, b3],
@@ -80,6 +80,9 @@ exitbtn.grid(row=12, column=3)
 buttons = new_Btns()
 
 activePalyer = "X"
+
+currPlayerbtn = Label(root, text="Current Player: "+activePalyer)
+currPlayerbtn.grid(row=12, column=2)
 
 finished = False
 
@@ -139,7 +142,7 @@ def reset():
         activePalyer = "X"
 
 
-def myfun(number):
+def onClick(number):
     global activePalyer, finished, mat, buttons
 
     if(mat[int((number-(((number-1) % 3)+1))/3)
@@ -149,6 +152,7 @@ def myfun(number):
         mat[int((number-(((number-1) % 3)+1))/3)
             ][int((number - 1) % 3)] = activePalyer
         changePlayer()
+        currPlayerbtn.config(text="Current Player: "+activePalyer)
         if (someoneWon()["res"]):
             finished = True
             messagebox.showinfo("Congratulations",
